@@ -1,29 +1,52 @@
-<!-- layouts/default.vue -->
 <template>
     <div>
-        <header>
-            <nav>
-                <NuxtLink to="/">Home</NuxtLink> |
-                <NuxtLink to="/profile">Profile</NuxtLink> |
-                <NuxtLink to="/about">About</NuxtLink>
-            </nav>
-        </header>
+        <nav>
+            <ul>
+                <li>
+                    <NuxtLink to="/">Home</NuxtLink>
+                </li>
+                <li v-if="isLogin">
+                    <NuxtLink to="/profile">{{ userName }}</NuxtLink>
+                </li>
+                <li v-else>
+                    <NuxtLink to="/auth/phone">Profile</NuxtLink>
+                </li>
+                <li>
+                    <NuxtLink to="/about">About</NuxtLink>
+                </li>
+            </ul>
+        </nav>
         <NuxtPage />
     </div>
 </template>
 
+<script setup>
+import { useAuthStore } from '~/stores/auth';
+
+const authStore = useAuthStore();
+const isLogin = computed(() => authStore.is_login);
+const userName = computed(() => authStore.user?.name || 'Profile');
+</script>
+
 <style scoped>
 nav {
-    margin-bottom: 20px;
+    background-color: #333;
+    color: #fff;
+    padding: 1rem;
 }
 
-nav a {
-    margin-right: 10px;
+ul {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+}
+
+li {
+    margin: 0;
+}
+
+a {
+    color: #fff;
     text-decoration: none;
-    color: #42b983;
-}
-
-nav a:hover {
-    text-decoration: underline;
 }
 </style>
