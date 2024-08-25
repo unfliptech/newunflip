@@ -33,13 +33,15 @@ const submitPhone = async () => {
     error.value = "";
 
     try {
-        await authStore.getOtp({ phone: phone.value });
+        await authStore.getOtp(phone.value); // Pass phone.value directly
+        navigateTo('/auth/otp');
     } catch (err) {
         error.value = err.response?.data?.error || "Failed to send OTP. Please try again.";
     } finally {
         loading.value = false;
     }
 };
+
 </script>
 
 <style scoped>

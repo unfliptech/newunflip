@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { getOtp } from "~/services/apis/auth";
+import { getOtp, verifyOtp } from "~/services/apis/auth";
 import { globalValidation } from "~/services/apis/main"; // Import from main.js
 
 export const useAuthStore = defineStore("auth", {
@@ -11,14 +11,23 @@ export const useAuthStore = defineStore("auth", {
   actions: {
     async getOtp(phone) {
       try {
-        await getOtp(phone);
+        // Ensure the phone is passed directly
+        await getOtp({ phone });
         this.phone = phone;
         this.is_login = false;
       } catch (error) {
         throw error;
       }
     },
-
+    async verifyOtp(otp) {
+      try {
+        const response = await verifyOtp(this.phone, otp);
+        this.user = response.user;
+        this.is_login = true;
+      } catch (error) {
+        throw error;
+      }
+    },
     async validateSession() {
       try {
         const response = await globalValidation(); // Call the global validation API
