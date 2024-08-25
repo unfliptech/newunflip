@@ -1,3 +1,4 @@
+// services/apis/main.js
 import { useNuxtApp } from "#app";
 
 export const globalValidation = async () => {

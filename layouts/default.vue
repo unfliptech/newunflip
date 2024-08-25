@@ -5,11 +5,8 @@
                 <li>
                     <NuxtLink to="/">Home</NuxtLink>
                 </li>
-                <li v-if="isLogin">
+                <li>
                     <NuxtLink to="/profile">{{ userName }}</NuxtLink>
-                </li>
-                <li v-else>
-                    <NuxtLink to="/auth/phone">Profile</NuxtLink>
                 </li>
                 <li>
                     <NuxtLink to="/about">About</NuxtLink>
@@ -21,11 +18,12 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
 import { useAuthStore } from '~/stores/auth';
 
 const authStore = useAuthStore();
-const isLogin = computed(() => authStore.is_login);
-const userName = computed(() => authStore.user?.name || 'Profile');
+
+const userName = computed(() => authStore.is_login && authStore.user ? authStore.user.name : 'Profile');
 </script>
 
 <style scoped>

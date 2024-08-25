@@ -1,3 +1,12 @@
+<script setup>
+definePageMeta({
+    middleware: 'auth'
+});
+</script>
+
 <template>
-    <div>Hello provile</div>
+    <div>
+        <h1>User Profile</h1>
+        <!-- Your profile page content -->
+    </div>
 </template>

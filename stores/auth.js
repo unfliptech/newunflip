@@ -1,18 +1,28 @@
 import { defineStore } from "pinia";
-import { globalValidation } from "~/services/apis/main";
+import { getOtp } from "~/services/apis/auth";
+import { globalValidation } from "~/services/apis/main"; // Import from main.js
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
     user: null,
     is_login: false,
+    phone: "",
   }),
   actions: {
-    async validateUser() {
+    async getOtp(phone) {
       try {
-        // Call the global validation API without device info
-        const response = await globalValidation();
+        await getOtp(phone);
+        this.phone = phone;
+        this.is_login = false;
+      } catch (error) {
+        throw error;
+      }
+    },
 
-        // Check if the user is authenticated
+    async validateSession() {
+      try {
+        const response = await globalValidation(); // Call the global validation API
+
         if (response.is_authenticated) {
           this.user = response.user;
           this.is_login = true;
@@ -21,11 +31,11 @@ export const useAuthStore = defineStore("auth", {
           this.user = null;
         }
       } catch (error) {
-        console.error("Error during global validation:", error);
+        console.error("Error during session validation:", error);
         this.is_login = false;
         this.user = null;
       }
     },
   },
-  persist: true, // Ensure state is persisted across sessions
+  persist: true, // Persist the state across sessions
 });

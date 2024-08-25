@@ -1,10 +1,6 @@
-import { useAuthStore } from "~/stores/auth";
+import { useGlobalStore } from "~/stores/global";
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
-  const authStore = useAuthStore();
-
-  // Call the validateUser action to perform global validation
-  await authStore.validateUser();
-
-  // The middleware ends here; it performs the validation and allows the navigation to continue
+  const globalStore = useGlobalStore();
+  await globalStore.globalValidate();
 });
